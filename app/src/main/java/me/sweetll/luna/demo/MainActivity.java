@@ -3,16 +3,21 @@ package me.sweetll.luna.demo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import java.util.List;
+
 import luna.annotation.State;
 import me.sweetll.luna.R;
 
 public class MainActivity extends AppCompatActivity {
-    @State int testInt;
-    @State Integer testInteger;
-    @State boolean testBoolean;
-    @State float testFloat;
-    @State String testString;
-    @State Product product;
+    int testInt;
+    Integer testInteger;
+    boolean testBoolean;
+    float testFloat;
+    String testString;
+    Product product;
+    @State List<Integer> integers;
+    @State List<String> strings;
+    @State List<Product> products;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

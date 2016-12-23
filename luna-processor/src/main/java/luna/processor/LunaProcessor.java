@@ -87,6 +87,8 @@ public class LunaProcessor extends AbstractProcessor {
                     onSaveInstanceStateMethodSpecBuilder.addStatement("bundle.putString($S, activity.$L)", variableName, variableName);
                 } else if (typeUtils.isSubtype(variableElement.asType(), parcelableTypeElement.asType())) {
                     onSaveInstanceStateMethodSpecBuilder.addStatement("bundle.putParcelable($S, activity.$L)", variableName, variableName);
+                } else {
+                    throw new UnsupportedOperationException(String.format("In class %s , variable %s cannot be state by Luna!", typeElement.getSimpleName().toString(), variableName));
                 }
             }
 
