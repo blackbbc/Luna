@@ -55,8 +55,8 @@ That's all!
 
 ## Support types:
 1. Boxed and unboxed primitive type.
-  - boolean, byte, short, int, long, char, float, double
-  - Boolean, Byte, Short, Int, Long, Char, Float, Double
+  - `boolean`, `byte`, `short`, `int`, `long`, `char`, `float`, `double`
+  - `Boolean`, `Byte`, `Short`, `Int`, `Long`, `Char`, `Float`, `Double`
 2. `String`
 3. `Parcelable`
 4. `List<Integer>`, `List<String>`, `List<Parcelable>`
