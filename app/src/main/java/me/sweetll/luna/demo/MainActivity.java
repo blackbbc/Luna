@@ -10,13 +10,13 @@ import luna.annotation.State;
 import me.sweetll.luna.R;
 
 public class MainActivity extends AppCompatActivity {
-    int testInt;
-    Integer testInteger;
-    boolean testBoolean;
-    float testFloat;
-    String testString;
-    Product product;
-    @State List<Integer> integers;
+    @State int testInt;
+    @State Integer testInteger;
+    @State boolean testBoolean;
+    @State float testFloat;
+    @State String testString;
+    @State Product product;
+    @State ArrayList<Integer> integers;
     @State List<String> strings;
     @State List<Product> products;
 
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        LunaMainActivity.onSaveInstanceState(this, savedInstanceState);
+        LunaMainActivity.onRestoreInstanceState(this, savedInstanceState);
 
         testInt = 10;
         testInteger = 100;
@@ -37,23 +37,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        LunaMainActivity.onRestoreInstanceState(this, outState);
+        LunaMainActivity.onSaveInstanceState(this, outState);
     }
-
-
-//    class LunaMainActivity {
-//        public void onSaveInstanceState(Bundle outStatue) {
-//            outStatue.putInt("testInt", testInt);
-//            outStatue.putBoolean("testBoolean", testBoolean);
-//            outStatue.putFloat("testFloat", testFloat);
-//            outStatue.putString("testString", testString);
-//        }
-
-//        public void onRestoreInstanceState(MainActivity activity, Bundle bundle) {
-//            activity.testInt = bundle.getInt("testInt");
-//            activity.testBoolean = bundle.getBoolean("testBoolean");
-//            activity.testFloat = bundle.getFloat("testFloat");
-//            activity.testString = bundle.getString("testString");
-//        }
-//    }
 }

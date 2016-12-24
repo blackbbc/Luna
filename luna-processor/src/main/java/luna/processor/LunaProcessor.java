@@ -51,12 +51,8 @@ public class LunaProcessor extends AbstractProcessor {
     }
 
     @Override
-    public Set<String> getSupportedAnnotationTypes() {
-        return Collections.singleton(State.class.getCanonicalName());
-    }
-
-    @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
+        map.clear();
         Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(State.class);
 
         // 获取所有的类及对应需要保存的状态
@@ -88,11 +84,12 @@ public class LunaProcessor extends AbstractProcessor {
             for (VariableElement variableElement : variableElements) {
                 String variableName = variableElement.getSimpleName().toString();
                 TypeName typeName = TypeName.get(variableElement.asType());
+
                 if (typeName.isBoxedPrimitive()) typeName = typeName.unbox();
                 if (typeName.isPrimitive()) {
                     // boolean, byte, int, long, float, double
-                    onSaveInstanceStateMethodSpecBuilder.addStatement("bundle.put$L($S, activity.$L)", toCamelCase(typeName.toString()), typeName.toString(), variableName);
-                } else if (typeName.equals(ClassName.get("java.lang", "String"))) {
+                    onSaveInstanceStateMethodSpecBuilder.addStatement("bundle.put$L($S, activity.$L)", toCamelCase(typeName.toString()), variableName, variableName);
+                } else if (typeUtils.isSameType(variableElement.asType(), typeElement(String.class).asType())) {
                     // String
                     onSaveInstanceStateMethodSpecBuilder.addStatement("bundle.putString($S, activity.$L)", variableName, variableName);
                 } else if (typeUtils.isSubtype(variableElement.asType(), parcelableTypeElement.asType())) {
@@ -108,7 +105,7 @@ public class LunaProcessor extends AbstractProcessor {
                     if (reifiedTypeName.equals(TypeName.INT)) {
                         // List<Integer>
                         onSaveInstanceStateMethodSpecBuilder.addStatement("bundle.putIntegerArrayList($S, ($T<Integer>) activity.$L)", variableName, ArrayList.class ,variableName);
-                    } else if (reifiedTypeName.equals(ClassName.get("java.lang", "String"))) {
+                    } else if (typeUtils.isSameType(reifiedTypeElement.asType(), typeElement(String.class).asType())) {
                         // List<String>
                         onSaveInstanceStateMethodSpecBuilder.addStatement("bundle.putStringArrayList($S, ($T<String>) activity.$L)", variableName, ArrayList.class, variableName);
                     } else if (typeUtils.isSubtype(reifiedTypeElement.asType(), parcelableTypeElement.asType())) {
@@ -127,7 +124,8 @@ public class LunaProcessor extends AbstractProcessor {
                     .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                     .returns(TypeName.VOID)
                     .addParameter(ClassName.get(typeElement.asType()), "activity")
-                    .addParameter(ClassName.get("android.os", "Bundle"), "bundle");
+                    .addParameter(ClassName.get("android.os", "Bundle"), "bundle")
+                    .addStatement("if (null == bundle) return");
 
             for (VariableElement variableElement : variableElements) {
                 String variableName = variableElement.getSimpleName().toString();
@@ -135,10 +133,31 @@ public class LunaProcessor extends AbstractProcessor {
                 if (typeName.isBoxedPrimitive()) typeName = typeName.unbox();
                 if (typeName.isPrimitive()) {
                     onRestoreInstanceStateMethodSpecBuilder.addStatement("activity.$L = bundle.get$L($S)", variableName, toCamelCase(typeName.toString()), typeName.toString());
-                } else if (typeName.equals(ClassName.get("java.lang", "String"))) {
+                } else if (typeUtils.isSameType(variableElement.asType(), typeElement(String.class).asType())) {
                     onRestoreInstanceStateMethodSpecBuilder.addStatement("activity.$L = bundle.getString($S)", variableName, variableName);
                 } else if (typeUtils.isSubtype(variableElement.asType(), parcelableTypeElement.asType())) {
                     onRestoreInstanceStateMethodSpecBuilder.addStatement("activity.$L = bundle.getParcelable($S)", variableName, variableName);
+                } else if (typeUtils.isSubtype(typeUtils.erasure(variableElement.asType()), typeUtils.erasure(listTypeElement.asType()))) {
+                    // List
+                    ParameterizedTypeName parameterizedTypeName = (ParameterizedTypeName) typeName;
+                    TypeName reifiedTypeName = parameterizedTypeName.typeArguments.get(0);
+                    if (reifiedTypeName.isBoxedPrimitive()) reifiedTypeName = reifiedTypeName.unbox();
+                    TypeElement reifiedTypeElement = elementUtils.getTypeElement(reifiedTypeName.toString());
+
+                    if (reifiedTypeName.equals(TypeName.INT)) {
+                        // List<Integer>
+                        onRestoreInstanceStateMethodSpecBuilder.addStatement("activity.$L = bundle.getIntegerArrayList($S)", variableName, variableName);
+                    } else if (typeUtils.isSameType(reifiedTypeElement.asType(), typeElement(String.class).asType())) {
+                        // List<String>
+                        onRestoreInstanceStateMethodSpecBuilder.addStatement("activity.$L = bundle.getStringArrayList($S)", variableName, variableName);
+                    } else if (typeUtils.isSubtype(reifiedTypeElement.asType(), parcelableTypeElement.asType())) {
+                        // List<Parcelable>
+                        onRestoreInstanceStateMethodSpecBuilder.addStatement("activity.$L = bundle.getParcelableArrayList($S)", variableName, variableName);
+                    } else {
+                        throw new UnsupportedOperationException(String.format("In class %s , variable %s cannot be state by Luna!", typeElement.getSimpleName().toString(), variableName));
+                    }
+                } else {
+                    throw new UnsupportedOperationException(String.format("In class %s , variable %s cannot be state by Luna!", typeElement.getSimpleName().toString(), variableName));
                 }
             }
 
@@ -167,6 +186,10 @@ public class LunaProcessor extends AbstractProcessor {
 
     private String toCamelCase(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+    }
+
+    private TypeElement typeElement(Class<?> type) {
+        return elementUtils.getTypeElement(type.getName());
     }
 
 //        MethodSpec main = MethodSpec.methodBuilder("main")
