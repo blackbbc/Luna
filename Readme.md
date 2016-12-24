@@ -1,10 +1,16 @@
+[![](https://jitpack.io/v/blackbbc/Luna.svg)](https://jitpack.io/#blackbbc/Luna)
+
 # Luna
 Android instance state helper. It uses apt to generate codes.
 
 ## Download
+First you need to open apt
 
 ```
-TODO
+dependencies {
+    apt 'com.github.blackbbc.Luna:luna-processor:1.0.1'
+    compile 'com.github.blackbbc.Luna:luna-annotation:1.0.1'
+}
 ```
 
 ## Usage
