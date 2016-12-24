@@ -3,6 +3,7 @@ package me.sweetll.luna.demo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import luna.annotation.State;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LunaMainActivity.onSaveInstanceState(this, savedInstanceState);
+//        LunaMainActivity.onSaveInstanceState(this, savedInstanceState);
 
         testInt = 10;
         testInteger = 100;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        LunaMainActivity.onRestoreInstanceState(this, outState);
+//        LunaMainActivity.onRestoreInstanceState(this, outState);
     }
 
 
