@@ -1,4 +1,5 @@
 [![](https://jitpack.io/v/blackbbc/Luna.svg)](https://jitpack.io/#blackbbc/Luna)
+[![Build Status](https://travis-ci.org/blackbbc/Luna.svg?branch=master)](https://travis-ci.org/blackbbc/Luna)
 
 # Luna
 Android instance state helper. It uses apt to generate codes.
