@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-Run "Build" to generate necessary helper codes. The helper codes is named by prefix `Luna` + ClassName. For example, the above will generate `LunaMainActivity` class. Then add the following codes to use them!.
+Run "Build" to generate necessary helper codes. The helper codes is named by prefix `Luna` + `ClassName`. For example, the above `MainActivity` will generate `LunaMainActivity` class. Then add the following codes to use them!.
 
 ```Java
 @Override
