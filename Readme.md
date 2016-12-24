@@ -1,15 +1,15 @@
 # Luna
-Android instance state helper. It use apt to generate codes.
+Android instance state helper. It uses apt to generate codes.
 
 ## Download
 
 ```
-
+TODO
 ```
 
 ## Usage
 
-1. Use `@State` annotation to annotate variables that need to save.
+Use `@State` annotation to annotate variables that need to save.
 ``` Java
 public class MainActivity extends AppCompatActivity {
     @State int testInt;
@@ -57,6 +57,6 @@ That's all!
 1. Boxed and unboxed primitive type.
   - boolean, byte, short, int, long, char, float, double
   - Boolean, Byte, Short, Int, Long, Char, Float, Double
-2. String
-3. Parcelable
-4. List<Integer>, List<string>, List<Parcelable>
+2. `String`
+3. `Parcelable`
+4. `List<Integer>`, `List<String>`, `List<Parcelable>`
