@@ -5,9 +5,26 @@
 Android instance state helper. It uses apt to generate codes.
 
 ## Download
-First you need to open apt
-
+Add it in your root build.gradle:
 ```
+buildscript {
+    dependencies {
+        ...
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+Add it in your app/build.gradle
+```
+apply plugin: 'com.neenbedankt.android-apt'
+
 dependencies {
     apt 'com.github.blackbbc.Luna:luna-processor:1.0.1'
     compile 'com.github.blackbbc.Luna:luna-annotation:1.0.1'
