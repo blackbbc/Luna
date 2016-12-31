@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4fa9b7247ee34e1597219386bdd8cd14)](https://www.codacy.com/app/505968815/Luna?utm_source=github.com&utm_medium=referral&utm_content=blackbbc/Luna&utm_campaign=badger)
 [![](https://jitpack.io/v/blackbbc/Luna.svg)](https://jitpack.io/#blackbbc/Luna)
 [![Build Status](https://travis-ci.org/blackbbc/Luna.svg?branch=master)](https://travis-ci.org/blackbbc/Luna)
 
